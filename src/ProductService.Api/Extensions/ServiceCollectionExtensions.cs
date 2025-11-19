@@ -4,12 +4,13 @@ using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using ProductService.Application.Behaviors;
 using ProductService.Application.Features.Products.Queries.GetList;
 using ProductService.Application.Handlers;
 using ProductService.Domain.Abtractions;
 using ProductService.Domain.Entities.Categories;
 using ProductService.Domain.Entities.Products;
-using ProductService.Domain.Exceptions.Variants;
+using ProductService.Domain.Entities.Variants;
 using ProductService.Infrastructure;
 using ProductService.Infrastructure.Repositories;
 
@@ -101,8 +102,8 @@ public static class ServiceCollectionExtensions
         {
             cfg.RegisterServicesFromAssemblies(assemblies);
             //cfg.AddOpenBehavior(typeof(CachingBehavior<,>));
-            //cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            //cfg.AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>));
         });
 
         return services;
