@@ -48,3 +48,13 @@ public static class ServiceCollectionExtensions
         return services;
     }
 }
+
+    public static IServiceCollection AddExceptionHandler(this IServiceCollection services)
+    {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddExceptionHandler<ProductExceptionHandler>();
+        services.AddExceptionHandler<CategoryExceptionHandler>();
+
+        return services;
+    }
+}

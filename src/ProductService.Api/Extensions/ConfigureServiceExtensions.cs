@@ -16,8 +16,8 @@ internal static partial class HostingExtensions
         builder.Services.AddControllers();
 
         // Custom Configuration
-        builder.Services.AddExceptionHandler<ProductExceptionHandler>();
-        builder.Services.AddExceptionHandler<CategoryExceptionHandler>();
+        
+        builder.Services.AddExceptionHandler();
         builder.Services.AddSwaggerConfiguration();
         builder.Services.AddDatabaseConfiguration(builder.Configuration);
         builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
