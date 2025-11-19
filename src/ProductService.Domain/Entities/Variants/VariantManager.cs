@@ -1,4 +1,5 @@
 using ProductService.Domain.Abtractions;
+using ProductService.Domain.Exceptions.Variants;
 
 namespace ProductService.Domain.Entities.Variants;
 
@@ -11,7 +12,7 @@ public class VariantManager
     }
     public async Task<Variant> CreateAsync(Guid productId,
                          string sku,
-                         float unitPrice,
+                         decimal unitPrice,
                          int quantity,
                          string mainImage,
                          string attributes)
@@ -19,7 +20,7 @@ public class VariantManager
         var existingEntity = await _repository.FindBySKUAsync(sku);
         if (existingEntity != null)
         {
-            throw new Exception($"Variant with {sku} existing");
+            throw new VariantExistException($"Variant with {sku} existing");
         }
 
         return new Variant
@@ -37,13 +38,13 @@ public class VariantManager
     {
         if (string.IsNullOrEmpty(newSKU) || string.IsNullOrWhiteSpace(newSKU))
         {
-            throw new BaseException("SKU is required");
+            throw new VariantExistException("SKU is required");
         }
 
         var existingEntity = await _repository.FindBySKUAsync(newSKU);
         if (existingEntity != null && existingEntity.Id != product.Id)
         {
-            throw new BaseException($"Variant with {newSKU} existing");
+            throw new VariantExistException($"Variant with {newSKU} existing");
         }
 
         product.ChangeSKU(newSKU);
