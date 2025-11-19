@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Application.Features.Categories.Commands.Create;
 using ProductService.Application.Features.Categories.Commands.Delete;
+using ProductService.Application.Features.Categories.Commands.Update;
 using ProductService.Application.Features.Categories.Queries.GetById;
 using ProductService.Application.Features.Categories.Queries.GetList;
 using ProductService.Common.Dtos.Categories;
@@ -36,10 +37,10 @@ public class CategoryController : ControllerBase
         return Ok(result);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Put([FromBody] UpdateCategoryDto model)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(Guid id, [FromBody] UpdateCategoryDto model)
     {
-        var command = new UpdateCategoryCommand(model);
+        var command = new UpdateCategoryCommand(id, model);
         await _sender.Send(command);
         return NoContent();
     }

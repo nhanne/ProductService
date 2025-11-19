@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using ProductService.Common.Dtos.Categories;
-using ProductService.Domain.Entities.Products;
+using ProductService.Domain.Entities.Categories;
 using ProductService.Domain.Exceptions.Categories;
 
 namespace ProductService.Application.Features.Categories.Queries.GetById;
@@ -9,9 +9,9 @@ namespace ProductService.Application.Features.Categories.Queries.GetById;
 public class GetCategoryQueryHandler : IRequestHandler<GetCategoryQuery, CategoryDto>
 {
     private readonly IMapper _mapper;
-    private readonly IProductReadOnlyRepository _repository;
+    private readonly ICategoryReadOnlyRepository _repository;
 
-    public GetCategoryQueryHandler(IMapper mapper, IProductReadOnlyRepository repository)
+    public GetCategoryQueryHandler(IMapper mapper, ICategoryReadOnlyRepository repository)
     {
         _repository = repository;
         _mapper = mapper;

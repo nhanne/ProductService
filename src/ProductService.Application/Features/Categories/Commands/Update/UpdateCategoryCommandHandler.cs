@@ -18,10 +18,10 @@ public class UpdateCategoryCommandHandler : IRequestHandler<UpdateCategoryComman
                              CancellationToken cancellationToken)
     {
         var input = command.Model;
-        var category = _repository.GetQueryable().FirstOrDefault(x => x.Id == input.Id);
+        var category = _repository.GetQueryable().FirstOrDefault(x => x.Id == command.Id);
         if (category == null)
         {
-            throw new CategoryNotFoundException(input.Id);
+            throw new CategoryNotFoundException(command.Id);
         }
         if (category.Code != input.Code)
         {
