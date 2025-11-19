@@ -15,6 +15,15 @@ internal static partial class HostingExtensions
         builder.Host.AddAutoFacConfiguration();
 
         // Default Configuration
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
+        });
         builder.Services.AddHttpClient();
         builder.Services.AddControllers();
         builder.Services.AddAutoMapper(typeof(ProductAutoMapperProfile).Assembly);

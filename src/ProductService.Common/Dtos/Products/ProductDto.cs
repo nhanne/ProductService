@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Http;
-
 namespace ProductService.Common.Dtos.Products;
 
 public record ProductDto(Guid Id,
