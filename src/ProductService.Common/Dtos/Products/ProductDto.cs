@@ -14,13 +14,10 @@ public record CreateProductDto(Guid CategoryId,
                                string Name,
                                string Code,
                                string? Note,
-                               decimal CostPrice,
-                               List<IFormFile> Images);
+                               decimal CostPrice);
 
-public record UpdateProductDto(Guid Id,
-                               Guid CategoryId,
+public record UpdateProductDto(Guid CategoryId,
                                string Name,
                                string Code,
                                string? Note,
-                               decimal CostPrice,
-                               List<IFormFile> Images);
+                               decimal CostPrice);

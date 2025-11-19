@@ -13,7 +13,7 @@ namespace ProductService.Api.Controllers.v1;
 [ApiController]
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
-public class ProductController : Controller
+public class ProductController : ControllerBase
 {
     private readonly ISender _sender;
     public ProductController(ISender sender)
@@ -30,17 +30,17 @@ public class ProductController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromForm] CreateProductDto model)
+    public async Task<IActionResult> Post([FromBody] CreateProductDto model)
     {
         var command = new CreateProductCommand(model);
         var result = await _sender.Send(command);
         return Ok(result);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Put([FromForm] UpdateProductDto model)
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(Guid id, [FromBody] UpdateProductDto model)
     {
-        var command = new UpdateProductCommand(model);
+        var command = new UpdateProductCommand(id, model);
         await _sender.Send(command);
         return NoContent();
     }

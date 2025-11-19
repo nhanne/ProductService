@@ -1,4 +1,6 @@
 using ProductService.Domain.Abtractions;
+using ProductService.Domain.Entities.Categories;
+using ProductService.Domain.Exceptions.Categories;
 using ProductService.Domain.Exceptions.Products;
 
 namespace ProductService.Domain.Entities.Products;
@@ -6,9 +8,12 @@ namespace ProductService.Domain.Entities.Products;
 public class ProductManager
 {
     private readonly IProductReadOnlyRepository _repository;
-    public ProductManager(IProductReadOnlyRepository repository)
+    private readonly ICategoryReadOnlyRepository _categoryRepository;
+    public ProductManager(IProductReadOnlyRepository repository,
+        ICategoryReadOnlyRepository categoryRepository)
     {
         _repository = repository;
+        _categoryRepository = categoryRepository;
     }
     public async Task<Product> CreateAsync(Guid categoryId,
                          string name,
@@ -17,6 +22,12 @@ public class ProductManager
                          decimal costPrice)
     //List<string>? images)
     {
+        var existingCategory = await _categoryRepository.GetByIdAsync(categoryId);
+        if (existingCategory == null)
+        {
+            throw new CategoryNotFoundException(categoryId);
+        }
+
         var existingEntity = await _repository.FindByCodeAsync(code);
         if (existingEntity != null)
         {

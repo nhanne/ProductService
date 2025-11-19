@@ -6,6 +6,7 @@ public class UpdateProductValidatorCommand : AbstractValidator<UpdateProductComm
 {
     public UpdateProductValidatorCommand()
     {
+        RuleFor(x => x.Id).NotEmpty().NotNull().WithMessage("Id is required.");
         RuleFor(x => x.Model.Name).NotEmpty().WithMessage("Name is required.")
                                   .Length(5, 50).WithMessage("Name must be between 5 and 50 characters.");
 

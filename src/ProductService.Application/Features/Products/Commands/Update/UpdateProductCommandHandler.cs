@@ -18,10 +18,10 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand>
                              CancellationToken cancellationToken)
     {
         var input = command.Model;
-        var product = _repository.GetQueryable().FirstOrDefault(x => x.Id == input.Id);
+        var product = _repository.GetQueryable().FirstOrDefault(x => x.Id == command.Id);
         if (product == null)
         {
-            throw new ProductNotFoundException(input.Id);
+            throw new ProductNotFoundException(command.Id);
         }
         if (product.Code != input.Code)
         {

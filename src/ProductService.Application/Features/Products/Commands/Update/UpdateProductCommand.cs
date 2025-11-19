@@ -3,4 +3,4 @@ using ProductService.Common.Dtos.Products;
 
 namespace ProductService.Application.Features.Products.Commands.Update;
 
-public record UpdateProductCommand(UpdateProductDto Model) : IRequest;
+public record UpdateProductCommand(Guid Id, UpdateProductDto Model) : IRequest;
