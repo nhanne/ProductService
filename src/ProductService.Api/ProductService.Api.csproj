@@ -7,16 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\ProductService.Application\ProductService.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>
   	<PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
   	<PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+  	<PackageReference Include="Autofac" Version="8.4.0" />
+  	<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
   	<PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.22" />
   	<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   	<PackageReference Include="Swashbuckle.AspNetCore" Version="7.1.0" />

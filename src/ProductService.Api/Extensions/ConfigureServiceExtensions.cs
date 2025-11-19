@@ -1,4 +1,6 @@
-﻿using ProductService.Application.Handlers;
+﻿using FluentValidation;
+using ProductService.Application.Handlers;
+using ProductService.Application.Mappers;
 using ProductService.Infrastructure;
 using Serilog;
 
@@ -10,15 +12,19 @@ internal static partial class HostingExtensions
     {
         // Host Configuration
         builder.Host.UseSerilog();
+        builder.Host.AddAutoFacConfiguration();
 
         // Default Configuration
         builder.Services.AddHttpClient();
         builder.Services.AddControllers();
+        builder.Services.AddAutoMapper(typeof(ProductAutoMapperProfile).Assembly);
+        builder.Services.AddValidatorsFromAssembly(typeof(ProductAutoMapperProfile).Assembly);
 
         // Custom Configuration
         
         builder.Services.AddExceptionHandler();
         builder.Services.AddSwaggerConfiguration();
+        builder.Services.AddMediatRConfiguration();
         builder.Services.AddDatabaseConfiguration(builder.Configuration);
         builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 

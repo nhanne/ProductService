@@ -1,8 +1,17 @@
 ﻿using Asp.Versioning;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Npgsql;
+using ProductService.Application.Features.Products.Queries.GetList;
+using ProductService.Application.Handlers;
+using ProductService.Domain.Abtractions;
+using ProductService.Domain.Entities.Categories;
+using ProductService.Domain.Entities.Products;
+using ProductService.Domain.Exceptions.Variants;
 using ProductService.Infrastructure;
+using ProductService.Infrastructure.Repositories;
 
 namespace ProductService.Api.Extensions;
 
@@ -47,7 +56,57 @@ public static class ServiceCollectionExtensions
 
         return services;
     }
-}
+
+    public static IHostBuilder AddAutoFacConfiguration(this IHostBuilder host)
+    {
+        host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+        host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+        {
+            containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
+            containerBuilder.RegisterGeneric(typeof(ReadOnlyRepository<>)).As(typeof(IReadOnlyRepository<>)).InstancePerLifetimeScope();
+
+            var assemblies = new[] {
+                typeof(IProductRepository).Assembly,
+                typeof(IRepository<>).Assembly,
+                typeof(Repository<>).Assembly
+            };
+
+            containerBuilder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().InstancePerLifetimeScope();
+            containerBuilder.RegisterAssemblyTypes(assemblies)
+                            .Where(t => t.Name.EndsWith("Repository"))
+                            .AsImplementedInterfaces()
+                            .InstancePerLifetimeScope();
+
+            //containerBuilder.RegisterAssemblyTypes(typeof(IS3Service).Assembly)
+            //                .Where(t => t.Name.EndsWith("Service"))
+            //                .AsImplementedInterfaces()
+            //                .InstancePerLifetimeScope();
+
+            containerBuilder.RegisterType<ProductManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<VariantManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<CategoryManager>().InstancePerLifetimeScope();
+        });
+
+        return host;
+    }
+
+    public static IServiceCollection AddMediatRConfiguration(this IServiceCollection services)
+    {
+        var assemblies = new[]
+        {
+            typeof(ListProductsQuery).Assembly,
+            typeof(ListProductsQuery).Assembly,
+        };
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(assemblies);
+            //cfg.AddOpenBehavior(typeof(CachingBehavior<,>));
+            //cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            //cfg.AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>));
+        });
+
+        return services;
+    }
 
     public static IServiceCollection AddExceptionHandler(this IServiceCollection services)
     {
