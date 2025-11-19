@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using ProductService.Domain.Entities.Products;
-using ProductService.Domain.Exceptions.Variants;
+using ProductService.Domain.Entities.Variants;
 
 namespace ProductService.Infrastructure.Configurations;
 

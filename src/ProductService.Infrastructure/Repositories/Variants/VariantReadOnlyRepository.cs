@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ProductService.Domain.Exceptions.Variants;
+using ProductService.Domain.Entities.Variants;
 
 namespace ProductService.Infrastructure.Repositories.Variants;
 

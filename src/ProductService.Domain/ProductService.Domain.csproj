@@ -10,8 +10,4 @@
     <ProjectReference Include="..\ProductService.Common\ProductService.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Entities\Variants\" />
-  </ItemGroup>
-
 </Project>

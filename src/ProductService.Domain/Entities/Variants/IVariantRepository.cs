@@ -1,6 +1,6 @@
 ﻿using ProductService.Domain.Abtractions;
 
-namespace ProductService.Domain.Exceptions.Variants;
+namespace ProductService.Domain.Entities.Variants;
 
 public interface IVariantRepository : IRepository<Variant>;
 
