@@ -1,22 +1,26 @@
-var builder = WebApplication.CreateBuilder(args);
-
-
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+using ProductService.Api.Extensions;
+using Serilog;
+using Serilog.Debugging;
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    var builder = WebApplication.CreateBuilder(args);
+    Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration)
+                                                       .CreateLogger();
+
+    SelfLog.Enable(msg => Log.Information(msg));
+    Log.Information("Starting server.");
+
+    var app = builder
+        .ConfigureServices()
+        .ConfigurePipeline(builder);
+
+    app.Run();
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+catch (Exception ex)
+{
+    Log.Fatal(ex, "server terminated unexpectedly");
+}
+finally
+{
+    Log.CloseAndFlush();
+}
