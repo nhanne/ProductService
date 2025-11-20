@@ -7,8 +7,9 @@ public class UpdateProductValidatorCommand : AbstractValidator<UpdateProductComm
     public UpdateProductValidatorCommand()
     {
         RuleFor(x => x.Id).NotEmpty().NotNull().WithMessage("Id is required.");
-        RuleFor(x => x.Model.Name).NotEmpty().WithMessage("Name is required.")
-                                  .Length(5, 50).WithMessage("Name must be between 5 and 50 characters.");
+        RuleFor(x => x.Model.Name).NotEmpty();
+        RuleFor(x => x.Model.Code).NotEmpty()
+                                   .Length(6).WithMessage("Code must be 6 characters.");
 
         RuleFor(x => x.Model.CostPrice).InclusiveBetween(10, 500).WithMessage("Cost price must be between 10 and 500.");
     }
