@@ -1,0 +1,120 @@
+﻿using Asp.Versioning;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Npgsql;
+using ProductService.Application.Behaviors;
+using ProductService.Application.Features.Products.Queries.GetList;
+using ProductService.Application.Handlers;
+using ProductService.Domain.Abtractions;
+using ProductService.Domain.Entities.Categories;
+using ProductService.Domain.Entities.Products;
+using ProductService.Domain.Entities.Variants;
+using ProductService.Infrastructure;
+using ProductService.Infrastructure.Repositories;
+
+namespace ProductService.Api.Extensions;
+
+public static class ServiceCollectionExtensions
+{
+    public static IServiceCollection AddSwaggerConfiguration(this IServiceCollection services)
+    {
+        services.AddEndpointsApiExplorer();
+        services.AddApiVersioning(cfg =>
+        {
+            cfg.DefaultApiVersion = new ApiVersion(1, 0);
+            cfg.AssumeDefaultVersionWhenUnspecified = true;
+            cfg.ReportApiVersions = true;
+            cfg.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
+                new HeaderApiVersionReader("x-api-version"),
+                new MediaTypeApiVersionReader("x-api-version"));
+            cfg.UnsupportedApiVersionStatusCode = StatusCodes.Status400BadRequest;
+        }).AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+        });
+        services.AddSwaggerGen(options =>
+        {
+            options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Product API v1",
+                Version = "v1",
+                Description = "Development by Tran Thanh Nhan"
+            });
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection AddDatabaseConfiguration(this IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        var connectionStringBuilder = new NpgsqlConnectionStringBuilder(connectionString);
+        services.AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionStringBuilder.ConnectionString));
+        services.AddDbContext<AppReadOnlyDbContext>(o => o.UseNpgsql(connectionStringBuilder.ConnectionString));
+
+        return services;
+    }
+
+    public static IHostBuilder AddAutoFacConfiguration(this IHostBuilder host)
+    {
+        host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+        host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+        {
+            containerBuilder.RegisterGeneric(typeof(Repository<>)).As(typeof(IRepository<>)).InstancePerLifetimeScope();
+            containerBuilder.RegisterGeneric(typeof(ReadOnlyRepository<>)).As(typeof(IReadOnlyRepository<>)).InstancePerLifetimeScope();
+
+            var assemblies = new[] {
+                typeof(IProductRepository).Assembly,
+                typeof(IRepository<>).Assembly,
+                typeof(Repository<>).Assembly
+            };
+
+            containerBuilder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().InstancePerLifetimeScope();
+            containerBuilder.RegisterAssemblyTypes(assemblies)
+                            .Where(t => t.Name.EndsWith("Repository"))
+                            .AsImplementedInterfaces()
+                            .InstancePerLifetimeScope();
+
+            //containerBuilder.RegisterAssemblyTypes(typeof(IS3Service).Assembly)
+            //                .Where(t => t.Name.EndsWith("Service"))
+            //                .AsImplementedInterfaces()
+            //                .InstancePerLifetimeScope();
+
+            containerBuilder.RegisterType<ProductManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<VariantManager>().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<CategoryManager>().InstancePerLifetimeScope();
+        });
+
+        return host;
+    }
+
+    public static IServiceCollection AddMediatRConfiguration(this IServiceCollection services)
+    {
+        var assemblies = new[]
+        {
+            typeof(ListProductsQuery).Assembly,
+            typeof(ListProductsQuery).Assembly,
+        };
+        services.AddMediatR(cfg =>
+        {
+            cfg.RegisterServicesFromAssemblies(assemblies);
+            //cfg.AddOpenBehavior(typeof(CachingBehavior<,>));
+            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            cfg.AddOpenBehavior(typeof(RequestResponseLoggingBehavior<,>));
+        });
+
+        return services;
+    }
+
+    public static IServiceCollection AddExceptionHandler(this IServiceCollection services)
+    {
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddExceptionHandler<ProductExceptionHandler>();
+        services.AddExceptionHandler<CategoryExceptionHandler>();
+
+        return services;
+    }
+}

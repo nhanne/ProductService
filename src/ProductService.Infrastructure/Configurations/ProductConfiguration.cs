@@ -1,0 +1,22 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using ProductService.Domain.Entities.Categories;
+using ProductService.Domain.Entities.Products;
+
+namespace ProductService.Infrastructure.Configurations;
+
+public class ProductConfiguration : IEntityTypeConfiguration<Product>
+{
+    public void Configure(EntityTypeBuilder<Product> builder)
+    {
+        builder.ToTable("Products");
+        builder.HasKey(x => new { x.Id });
+        builder.HasIndex(x => new { x.Id });
+        builder.HasIndex(x => new { x.Code });
+        builder.HasIndex(x => new { x.CategoryId });
+        builder.HasOne<Category>()
+               .WithMany()
+               .HasForeignKey(x => x.CategoryId)
+               .OnDelete(DeleteBehavior.Restrict);
+    }
+}

@@ -1,0 +1,69 @@
+﻿using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using ProductService.Common.Response.HealthChecks;
+using ProductService.Infrastructure;
+using Serilog;
+
+namespace ProductService.Api.Extensions;
+
+internal static partial class HostingExtensions
+{
+    public static WebApplication ConfigurePipeline(this WebApplication app, WebApplicationBuilder builder)
+    {
+        app.CheckHealthy();
+        app.UseCors("AllowAll");
+        app.MapControllers();
+        app.ConfigureDevelopment();
+        app.UseExceptionHandler("/error");
+        app.UseSerilogRequestLogging();
+        //app.UseAuthentication();
+        //app.UseAuthorization();
+
+        return app;
+    }
+    private static WebApplication CheckHealthy(this WebApplication app)
+    {
+        app.UseHealthChecks("/api/v1/product/health", new HealthCheckOptions
+        {
+            ResponseWriter = async (context, report) =>
+            {
+                context.Response.ContentType = "application/json";
+                var response = new HealthCheckResponse
+                {
+                    Status = report.Status.ToString(),
+                    HealthChecks = report.Entries.Select(x => new IndividualHealthCheckResponse
+                    {
+                        Component = x.Key,
+                        Status = x.Value.Status.ToString(),
+                        Description = x.Value.Description ?? string.Empty
+
+                    }),
+                    HealthCheckDuration = report.TotalDuration
+                };
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(response));
+            }
+        });
+
+        return app;
+    }
+    private static WebApplication ConfigureDevelopment(this WebApplication app)
+    {
+        using var scope = app.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        if (context.Database.GetPendingMigrations().Any())
+        {
+            context.Database.Migrate();
+        }
+        if (!app.Environment.IsProduction())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(options =>
+            {
+                options.DisplayRequestDuration();
+            });
+        }
+
+        return app;
+    }
+}
