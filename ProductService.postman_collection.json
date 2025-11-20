@@ -1,0 +1,400 @@
+{
+	"info": {
+		"_postman_id": "76e5ee0f-94a5-49b2-aec0-c80edf954eb8",
+		"name": "ProductService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24095328"
+	},
+	"item": [
+		{
+			"name": "Product Endpoint",
+			"item": [
+				{
+					"name": "Get List Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Product",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"categoryId\": \"ffe72b81-caa6-4db2-bf66-e41aa72e9f9b\",\r\n  \"name\": \"Ao Test\",\r\n  \"code\": \"600000\",\r\n  \"note\": \"string\",\r\n  \"costPrice\": 100\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"categoryId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"name\": \"string\",\r\n  \"code\": \"string\",\r\n  \"note\": \"string\", \r\n  \"costPrice\": 100\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/2ebfc859-aa97-4eb5-9e63-2d8c9cb52cdc",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"2ebfc859-aa97-4eb5-9e63-2d8c9cb52cdc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/cc15821e-c07f-4138-843e-c997332fcfdc",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"cc15821e-c07f-4138-843e-c997332fcfdc"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/602be4ea-a863-490e-a1cf-aaed8f251d49",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"602be4ea-a863-490e-a1cf-aaed8f251d49"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category Endpoint",
+			"item": [
+				{
+					"name": "Get List Categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Category",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pants\",\r\n  \"code\": \"1\",\r\n  \"description\": \"Category for pants\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Category",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Category"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pants\",\r\n  \"code\": \"1000002\",\r\n  \"description\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Category/9925fa2e-1be3-4c6b-896e-341ffb9761f1",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Category",
+								"9925fa2e-1be3-4c6b-896e-341ffb9761f1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Pants\",\r\n  \"code\": \"1000002\",\r\n  \"description\": \"test\"\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Category/bd0eb000-bdcb-4a41-9d3a-29be196d89c7",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Category",
+								"bd0eb000-bdcb-4a41-9d3a-29be196d89c7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Category by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Category/6847b53f-f6d0-4354-a247-f3ea3056f5a4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Category",
+								"6847b53f-f6d0-4354-a247-f3ea3056f5a4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Variant Endpoint",
+			"item": [
+				{
+					"name": "Get List Variant By Product Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Variant/aae6e0d7-f649-453c-9833-67a8c2cb6edf",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Variant",
+								"aae6e0d7-f649-453c-9833-67a8c2cb6edf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Variant of Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": \"aae6e0d7-f649-453c-9833-67a8c2cb6edf\",\r\n  \"sku\": \"700234212\",\r\n  \"unitPrice\": 100,\r\n  \"quantity\": 10,\r\n  \"mainImage\": \"string\",\r\n  \"Attributes\": {\r\n    \"size\": \"L\",\r\n    \"color\": \"red\"\r\n  }\r\n}"
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Variant",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Variant"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Variant",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productId\": \"cc15821e-c07f-4138-843e-c997332fcfdc\",\r\n  \"sku\": \"700234212\",\r\n  \"unitPrice\": 200,\r\n  \"quantity\": 10,\r\n  \"mainImage\": \"string\",\r\n  \"Attributes\": {\r\n    \"size\": \"L\",\r\n    \"color\": \"red\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Variant/0ca9850c-30a5-49a7-853b-ed3d2a50f20a",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Variant",
+								"0ca9850c-30a5-49a7-853b-ed3d2a50f20a"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Variant",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://localhost:7168/api/v1/product/Variant/cc15821e-c07f-4138-843e-c997332fcfdc",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7168",
+							"path": [
+								"api",
+								"v1",
+								"product",
+								"Variant",
+								"cc15821e-c07f-4138-843e-c997332fcfdc"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
